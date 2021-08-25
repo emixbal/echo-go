@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"echo-go/controllers"
 	"fmt"
 	"net/http"
 
@@ -13,6 +14,8 @@ func Init() *echo.Echo {
 		fmt.Println("/ hitted")
 		return c.String(http.StatusOK, "hi, im from echo")
 	})
+
+	e.GET("/pegawai", controllers.FetchAllPegawai)
 
 	return e
 }

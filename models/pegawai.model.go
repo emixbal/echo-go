@@ -7,7 +7,7 @@ import (
 
 type Pegawai struct {
 	Id      int    `json:"id"`
-	Nama    string `json:"nama"`
+	Name    string `json:"name"`
 	Alamat  string `json:"alamat"`
 	Telepon string `json:"telepon"`
 }
@@ -30,7 +30,7 @@ func FethAllPegawai() (Response, error) {
 	}
 
 	for rows.Next() {
-		err = rows.Scan(&obj.Id, &obj.Nama, &obj.Alamat, &obj.Telepon)
+		err = rows.Scan(&obj.Id, &obj.Name, &obj.Alamat, &obj.Telepon)
 		if err != nil {
 			return res, err
 		}
@@ -39,6 +39,37 @@ func FethAllPegawai() (Response, error) {
 	res.Status = http.StatusOK
 	res.Message = "sukses"
 	res.Data = arrobj
+
+	return res, nil
+}
+
+func StorePegawai(name string, alamat string, telepon string) (Response, error) {
+	var res Response
+
+	con := db.CreateCon()
+
+	sqlStatement := "INSERT pegawai (name, alamat, telephone) VALUES (?, ?, ?)"
+
+	stmt, err := con.Prepare(sqlStatement)
+	if err != nil {
+		return res, err
+	}
+
+	result, err := stmt.Exec(name, alamat, telepon)
+	if err != nil {
+		return res, err
+	}
+
+	lastInsertedId, err := result.LastInsertId()
+	if err != nil {
+		return res, err
+	}
+
+	res.Status = http.StatusOK
+	res.Message = "Success"
+	res.Data = map[string]int64{
+		"lastInsertedId": lastInsertedId,
+	}
 
 	return res, nil
 }

@@ -17,9 +17,9 @@ func FetchAllPegawai(c echo.Context) error {
 }
 
 func StorePegawai(c echo.Context) error {
-	nama := c.FormValue("nama")
+	nama := c.FormValue("name")
 	alamat := c.FormValue("alamat")
-	telepon := c.FormValue("telepon")
+	telepon := c.FormValue("telephone")
 
 	result, err := models.StorePegawai(nama, alamat, telepon)
 

@@ -45,3 +45,15 @@ func UpdatePegawai(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, result)
 }
+
+func DeletePegawai(c echo.Context) error {
+	id := c.Param("id")
+	converted_id, err := strconv.Atoi(id)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	result, err := models.DeletePegawai(converted_id)
+
+	return c.JSON(http.StatusOK, result)
+}

@@ -3,6 +3,7 @@ package controllers
 import (
 	"echo-go/models"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -26,6 +27,21 @@ func StorePegawai(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
+
+	return c.JSON(http.StatusOK, result)
+}
+
+func UpdatePegawai(c echo.Context) error {
+	name := c.FormValue("name")
+	alamat := c.FormValue("alamat")
+	telephone := c.FormValue("telephone")
+	id := c.Param("id")
+	converted_id, err := strconv.Atoi(id)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	result, err := models.UpdatePegawai(converted_id, name, alamat, telephone)
 
 	return c.JSON(http.StatusOK, result)
 }
